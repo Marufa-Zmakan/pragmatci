@@ -355,3 +355,40 @@ class WebsiteSale(WebsiteSale):
         if post.get('type') == 'cart_lines_popup':
             return request.render('atharva_theme_general.cart_lines_popup_content', values)
         return False
+
+    @http.route('/upload-prescription', type="http", auth="user", website=True)
+    def prescription_webform(self, **kw):
+        print("Execution Here.........................")
+        values, errors = {}, {}
+        partner = request.env.user.partner_id
+        countries = request.env['res.country'].sudo().search([])
+        values.update({
+            'partner': partner,
+            'countries': countries,
+        })
+        return http.request.render('atharva_theme_general.upload_prescription', values)
+
+    @http.route(['/prescription-submit'], type='http', auth='public', website=True)
+    def upload_prescription(self, redirect=None, **kw):
+        crm = request.env['crm.lead']
+        print("86............",kw)
+        attachment=kw.get('Custom File Upload')
+        crm_val=({
+            'contact_name':kw.get('contact_name'),
+            'description':kw.get('description') or False,
+            'email_from': kw.get('email_from'),
+            'name': 'Prescription',
+            'partner_name':kw.get('partner_name'),
+            'phone':kw.get('phone'),
+            'city': kw.get('city'),
+            'street': kw.get('street'),
+            # 'country_id':kw.get('country_id'),
+            'prescription_datas': base64.b64encode(attachment.read()),
+            'team_id':request.website.crm_default_team_id.id or False,
+            'user_id':request.website.crm_default_user_id.id or False,
+        })
+        rec = crm.sudo().create(crm_val)
+        return http.request.render('atharva_theme_general.customer_thanks', {})
+
+
+

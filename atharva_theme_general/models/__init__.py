@@ -10,3 +10,4 @@ from . import custom_shop
 from . import product_brand
 from . import product_tabs
 from . import product_tags
+from . import crm_lead

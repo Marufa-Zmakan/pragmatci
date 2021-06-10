@@ -39,7 +39,10 @@
         'views/product_brand_page.xml',
         'views/header_footer_template.xml',
         'views/product_quick_view_template.xml',
-        'views/custom_templates_inherit.xml'
+        'views/custom_templates_inherit.xml',
+        'views/upload_prescription_page.xml',
+        'views/crm_prescription_view.xml',
+        'views/store_locator_page.xml'
     ],
     'demo': [
         'data/demo.xml',
