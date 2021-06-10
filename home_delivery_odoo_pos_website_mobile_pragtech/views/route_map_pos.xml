@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="route-map-view_pos" name="Route map for POS"
+                  inherit_id="pragmatic_delivery_control_app.route-map-view">
+            <!--        <xpath expr="//input[@id='manage_sale_order_delivery']/t" position="after">-->
+            <xpath expr="//input[@id='picking_ids']" position="after">
+                      <input type="hidden" id="route_values" t-att-value="routes"/>
+
+                <input type="hidden" id="pos_orders" t-att-value="pos_orders"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

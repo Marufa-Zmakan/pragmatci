@@ -1,0 +1,112 @@
+/*.other_info .delivery_person
+{
+    margin-right : 200px;
+}
+*/
+.other_info .delivery_note{
+    margin-right:50px;
+}
+
+
+/*============== Added CSS By Rohit ===========*/
+
+/*.pos .control-button {font-size:14px; background-color:#fff; color: #000!important; }*/
+
+.home-delivery-popup .title {background: #5a1d2d!important; color: #fff!important;}
+
+.customer-details-left .form-control {width:100%!important; display:block!important; font-size: 14px!important;
+    /* padding: 5px!important; */
+    min-height: 37px!important; }
+
+.customer-details-left label {width: 100%; margin-bottom: 6px;    
+    display: block;
+    text-align: left;}
+
+.customer-details-left {padding:10px;}
+
+.default_shipping_address h6 {    margin: auto;
+    margin-bottom: 10px;}
+
+.address-checkbox {    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin: 0px;
+}
+
+.address-checkbox label {
+    min-height: 20px;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+
+.address-checkbox #address_checkbox {width: 18px; margin-left: 32%;     border: 0px;
+    box-shadow: inherit;
+    float: left;
+    text-align: left;}
+
+.address-checkbox h6 {text-align: left;}
+
+/*.pos .mode-button.selected-mode {    color: #000!important;
+    background: #ffbdc8!important;}*/
+
+.home-delivery-popup .footer {
+background-color: #fff!important; width:100%!important;
+float: left!important; position: relative!important;
+}
+
+.delivery-details-box {padding: 10px;}
+
+.delivery-details-box label { display: inline; font-size: 14px;}
+
+.delivery-details-box h3 {    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.delivery_person {margin-top: 10px;
+    margin-bottom: 10px;}
+
+.home-delivery-popup input {font-size:14px!important;}
+
+#delivery_person {    width: 77%;
+    padding: 9px;    }
+
+#customer-shipping-address {width:100%; float:left; margin: auto;  }
+
+.home-delivery-popup .modal-content {float: left!important;
+width: 100%important;}
+
+.home-delivery-popup .modal-body {float: left!important;
+width: 100%!important;
+background-color: #e7e7e7!important;}
+
+.home-delivery-popup {position: relative!important;}
+
+/* Buttons on the POS floor screen */
+.show_delivery_buttons_floor {
+    display : flex;
+
+}
+
+
+.show_delivery_buttons_floor .home_delivery_button{
+        font-size : 18px;
+        font-weight: bold;
+        text-align: center;
+        min-width: 128px;
+        padding-left: 16px;
+        padding-right: 16px;
+}
+
+.main_floor_custom .main_floor_button{
+    font-weight: bold;
+    font-size: 16px;
+    font-color: #000;
+    background: #6EC89B;
+    min-width: 140px;
+    min-height: 50px;
+    padding-left: 16px;
+    padding-right: 16px;
+}

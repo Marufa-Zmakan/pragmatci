@@ -1,0 +1,247 @@
+<odoo>
+    <data>
+        <!-- MANAGE DELIVERY DASHBOARD INHERIT-->
+        <template id="manage_sale_and_pos_order_delivery" name="Manage Sale And Pos Order Delivery"
+                  inherit_id="pragmatic_delivery_control_app.manage_sale_order_delivery">
+
+            <xpath expr="//select[@name='sel-order-source']/option" position="after">
+                <option value="pos">POS</option>
+            </xpath>
+
+            <xpath expr="//tbody[@id='manage_sale_order_delivery']/t" position="after">
+                <t t-foreach="pos_orders" t-as="pos_order">
+                    <tr t-att-id="pos_order.id">
+                        <td>
+                            <a t-att-href="'/page/pos-order-view/' + str(pos_order.pos_reference)">
+                                <span t-field="pos_order.pos_reference"/>
+                            </a>
+                        </td>
+                        <td>
+                            <span t-field="pos_order.pos_delivery_order_ref.partner_id.name"/>
+                        </td>
+                        <td>
+                            <span class="mt0" t-field="pos_order.pos_delivery_order_ref.partner_id" t-field-options='{
+							                        "widget": "contact",
+							                        "fields": ["address"],
+							                        "no_marker": true
+							                    }'/>
+                        </td>
+                        <td>
+                            <span t-field="pos_order.pos_delivery_order_ref.order_source" id="order_source"/>
+                        </td>
+                        <td>
+                            <span t-field="pos_order.pos_delivery_order_ref.state"/>
+                        </td>
+                        <td id="order_driver_name">
+                            <span t-if="pos_order.pos_delivery_order_ref.delivery_boy"
+                                  t-field="pos_order.pos_delivery_order_ref.delivery_boy.name"/>
+                        </td>
+                        <td>
+                            <span t-if="pos_order.pos_delivery_order_ref.warehouse_id"
+                                  t-field="pos_order.pos_delivery_order_ref.warehouse_id"/>
+                        </td>
+                        <td>
+                            <!--<a-->
+                            <!--style="float:left; color:#000 !important; background-color:#4d9c29!important; padding: 6px;margin-top: 4px; border: 1px solid #306119; margin-bottom:4px; font-size:10px;"-->
+                            <!--href="#select_driver" t-attf-class="assign-driver  #{order.id}"-->
+                            <!--t-att-order_id="order.id" t-att-id="order..id"-->
+                            <!--data-toggle="modal" data-target="#select_driver"-->
+                            <!--t-att-data-order-steps="order.delivery_state">-->
+                            <!--Assign Driver-->
+                            <!--</a>-->
+                            <a style="float: left; color:#fff!important;  background-color:#000!important; padding: 6px;margin-top: 4px; border: 1px solid #306119; margin-bottom:4px; font-size:10px;"
+                                    t-att-order_id="pos_order.pos_reference" data-order-source="POS"
+                                    class="collect_payment_pos"
+                                    href="#" t-att-data-order-steps="pos_order.pos_delivery_order_ref.state">
+                                Collect Payment
+                            </a>
+                        </td>
+                    </tr>
+                </t>
+
+            </xpath>
+        </template>
+
+        <!-- POS DELIVERY ORDER DETAILS-->
+
+        <template id="pos-order-view" name="POS Order">
+            <div id="spinner"/>
+            <t t-call="website.layout">
+                <div class="oe_structure">
+                    <div class="container">
+                        <div class="viewjoblist_mainsection">
+                            <h5 class="background">
+                                <span>View Joblist</span>
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="longtitude-latitudeinut">
+                                        <input type="text" id="latitude" name="latitude"
+                                               t-att-value="latitude" placeholder="Partner Latitude"
+                                               readonly="readonly"/>
+                                        <input type="text" id="longitude" name="longitude"
+                                               t-att-value="longitude" placeholder="Partner Longitude"
+                                               readonly="readonly"/>
+                                        <input type="text" id="driver_latitude" name="driver_latitude"
+                                               t-att-value="driver_latitude" placeholder="Driver Latitude"
+                                               readonly="readonly"/>
+                                        <input type="text" id="driver_longitude" name="driver_longitude"
+                                               t-att-value="driver_longitude" placeholder="Driver Longitude"
+                                               readonly="readonly"/>
+                                        <input type="hidden" id="driver_id" name="driver_id"
+                                               t-att-value="order.pos_delivery_order_ref.delivery_boy.id"/>
+                                    </div>
+                                    <br/>
+                                    <br/>
+                                    <div class="joblist_tablecoloumn">
+
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+                                                <label class="control-label">Order No</label>
+                                                <input class="form-control" id="order_number" type="text"
+                                                       name="order_number"
+                                                       t-att-value="order.pos_reference"
+                                                       t-att-data-order_id="order.id"/>
+                                            </div>
+
+                                            <div class="joblist_right">
+                                                <label class="control-label">Customer Name</label>
+                                                <input class="form-control" type="text" name="customer_name"
+                                                       t-att-value="order.pos_delivery_order_ref.partner_id.name"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+                                                <label class="control-label">Customer Address</label>
+                                                <div class="address_col"
+                                                     t-field="order.pos_delivery_order_ref.partner_id.street"
+                                                     t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
+                                            </div>
+
+                                            <div class="joblist_right">
+                                                <label class="control-label">Customer Phone</label>
+                                                <input class="form-control" type="text" name="customer_phone"
+                                                       t-att-value="order.pos_delivery_order_ref.phone"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+                                                <label class="control-label">Order Type</label>
+
+                                            </div>
+
+                                            <div class="joblist_right">
+                                                <label class="control-label">Order Source</label>
+                                                <input class="form-control" type="text" name="order_source"
+                                                       value="POS"/>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+
+                                                <label class="control-label">Order Details</label>
+                                                <div class="address_col">
+                                                    <table class="table table-condensed">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="80%">Product Name</th>
+                                                                <th width="20%" class="text-right">Qty</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="sale_tbody">
+                                                            <t t-foreach="order.lines" t-as="line">
+                                                                <tr>
+                                                                    <td>
+                                                                        <span t-field="line.product_id.name"/>
+                                                                    </td>
+                                                                    <td class="text-right">
+                                                                        <span t-field="line.qty"/>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </t>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+                                                <label class="control-label">Order Status</label>
+                                                <input class="form-control" type="text" name="order_status"
+                                                       t-att-value="order.pos_delivery_order_ref.state"/>
+                                            </div>
+
+                                            <div class="joblist_right">
+                                                <label class="control-label">Driver Name</label>
+                                                <input class="form-control" type="text" name="driver_name"
+                                                       t-att-value="order.pos_delivery_order_ref.delivery_boy.name"/>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group field-name sizealign">
+                                            <div class="joblist_left">
+                                                <label class="control-label">Restaurant Name</label>
+                                                <input class="form-control" type="text" name="restaurant_name"
+                                                       t-att-value="order.pos_delivery_order_ref.warehouse_id.name"/>
+                                            </div>
+
+
+                                            <div class="joblist_right">
+                                                <label class="control-label">Payment With Driver</label>
+                                                <select class="form-control link-style btn-select" id="selectPayment"
+                                                        name="selectPayment">
+                                                    <option>-- select an option --</option>
+                                                    <option value="cash_on_delivery">Cash On Delivery</option>
+                                                    <option value="prepaid">Prepaid</option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <script t-att-src="maps_script_url"/>
+                                    <div id="customer_map" style="height:300px;width:100%;border:1px solid red;"></div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="viewjoblist_button">
+                                        <button class="joblist_buttons joblist_cancel_pos_order"
+                                                data-oe-model="ir.ui.view" data-oe-id="1157"
+                                                data-oe-field="arch"
+                                                data-oe-xpath="/t[1]/t[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[9]/div[1]/div[1]/button[1]"
+                                                t-att-data-order_id="order.pos_reference" style="width: 170px;">Cancel
+                                            Order
+                                        </button>
+
+
+                                        <button class="joblist_buttons joblist_back" style="width: 170px;">
+                                            Back
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

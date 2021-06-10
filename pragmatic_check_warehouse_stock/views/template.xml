@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Stock">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pragmatic_check_warehouse_stock/static/src/js/variant_mixin.js" />
+        </xpath>
+    </template>
+</odoo>

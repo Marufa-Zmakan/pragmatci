@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <!-- Manage Sale Order Delivery -->
+        <template id="manage_job_list" name="Manage Job list">
+            <t t-call="website.layout">
+
+                <div class="delivery_controlsection col-md-12">
+                    <style>
+                        #right-panel {
+                        font-family: 'Roboto','sans-serif';
+                        line-height: 30px;
+                        padding-left: 10px;
+                        }
+
+                        #right-panel select, #right-panel input {
+                        font-size: 15px;
+                        }
+
+                        #right-panel select {
+                        width: 100%;
+                        }
+
+                        #right-panel i {
+                        font-size: 12px;
+                        }
+                        html, body {
+                        height: 100%;
+                        margin: 0;
+                        padding: 0;
+                        }
+
+                        #map {
+                        margin-top:10px;
+                        height:500px;
+                        width:100%;
+                        border:1px solid red;
+                        }
+
+                        .delivery_controlsection{
+                        min-height:500px;
+                        display:inline-flex;
+                        }
+
+                        #right-panel {
+                        margin: 20px;
+                        border-width: 2px;
+                        width: 20%;
+                        height: 400px;
+                        float: left;
+                        text-align: left;
+                        padding-top: 0;
+                        }
+                    </style>
+                    <div class="col-md-3">
+                        <t t-if="routes">
+                            <div>
+                                <div id="map"></div>
+                                <script t-att-src="maps_script_url"/>
+                            </div>
+
+                            <input type="hidden" id="route_values" t-att-value="routes"/>
+                            <input type="hidden" id="picking_ids" t-att-value="picking_ids"/>
+                            <input type="hidden" id="total_distance"/>
+                            <!--                    <button type="button" name="delivered" id="delivered">All Products Delivered</button>-->
+                        </t>
+                        <t t-if="not routes">
+                            Currently there are no deliveries for you yet.
+                        </t>
+                    </div>
+                    <!-- <script src="//maps.google.com/maps/api/js?key=AIzaSyCChNwSwK4wdJOYsCi_PSOYRjkG3y7TvGs&amp;libraries=places&amp;language=en-AU"/> -->
+                    <div class="delivercontrol_section panel panel-primary filterable col-md-9">
+                        <h5 class="background">
+                            <span>My Job List</span>
+                        </h5>
+
+                        <br/>
+                        <br/>
+                        <div class="pull-right" name="header_manage_job_list">
+                            <input type="hidden" name="delivery_boy_status" id="delivery_boy_status"
+                                   t-att-value="delivery_boy.status"/>
+                            <input type="hidden" name="delivery_boy" id="delivery_boy" t-att-value="delivery_boy.id"/>
+                            <button class="btn btn-default btn-xs driver_status" id="driver_status"
+                                    style="margin-bottom:10px; background-color: #ebebeb;">
+                                <span id="delivery_boy_change_text" t-field="delivery_boy.status"></span>
+                                <!--<t t-esc="{False: False, 'available': 'Available', 'not_available': 'Not Available'}-->
+                                <!--[delivery_boy.status]"/>-->
+                            </button>
+                            <button class="btn btn-default btn-xs start_delivery" id="start_delivery"
+                                    style="margin-bottom:10px; background-color: #ebebeb;">
+                                <span id="start_delivery">Start Delivery</span>
+                                <!--<t t-esc="{False: False, 'available': 'Available', 'not_available': 'Not Available'}-->
+                                <!--[delivery_boy.status]"/>-->
+                            </button>
+
+                        </div>
+                        <div class="table-responsive replace_table">
+                            <table id="display_sale_orders" class="table table-striped">
+                                <thead>
+                                    <tr class="filters">
+                                        <th>
+                                            <input name="txt-order-no" type="text" class="form-control"
+                                                   placeholder="Order No" disabled="1"/>
+                                        </th>
+                                        <th>
+                                            <input name="txt-cust-name" type="text" class="form-control"
+                                                   placeholder="Customer Name" disabled="1"/>
+                                        </th>
+                                        <th>
+                                            <input name="txt-cust-area" type="text" class="form-control"
+                                                   placeholder="Customer Address" disabled="1"/>
+                                        </th>
+                                        <th>
+                                            <input name="txt-cust-phone" type="text" class="form-control"
+                                                   placeholder="Phone" disabled="1"/>
+                                        </th>
+                                        <th>
+                                            <input name="txt-distance" type="text" class="form-control"
+                                                   placeholder="Distance" disabled="1"/>
+                                        </th>
+                                        <th>
+                                            <input name="txt-price" type="text" class="form-control"
+                                                   placeholder="Price" disabled="1"/>
+                                        </th>
+
+<!--                                        <th>-->
+<!--                                            <input name="txt-payment-status" type="text" class="form-control"-->
+<!--                                                   placeholder="Payment-status" disabled="1"/>-->
+<!--                                        </th>-->
+
+                                        <th>
+                                            <input name="sel-order-status" type="text" class="form-control"
+                                                   placeholder="Status" disabled="1"/>
+
+<!--                                            <select name="sel-order-status" class="form-control"-->
+<!--                                                    disabled="1">-->
+<!--                                                <option value="select" selected="selected">Status-->
+<!--                                                </option>-->
+<!--                                                <option value="ready">Ready</option>-->
+<!--                                                <option value="assigned">Assigned</option>-->
+<!--                                                <option value="delivered">Delivered</option>-->
+<!--                                                <option value="issues">Issues</option>-->
+<!--                                                <option value="complete">Complete</option>-->
+<!--                                            </select>-->
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="manage_sale_order_delivery">
+                                    <t t-foreach="picking_orders" t-as="picking">
+                                        <t t-if="picking.order_source=='sale'">
+                                            <tr t-att-id="picking.sale_order.id">
+                                                <td>
+                                                    <a t-att-href="'/page/job_list/order-view/' + str(picking.sale_order.id)">
+                                                        <span t-field="picking.sale_order.name"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <span t-field="picking.sale_order.partner_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="picking.sale_order.partner_id"
+                                                        t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "phone_icons": True}'/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="picking.sale_order.partner_id.phone"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="picking.distance_btn_2_loc"/><span> KM</span>
+                                                </td>
+                                                <td>
+                                                    <span t-field="picking.sale_order.amount_total"/>
+                                                </td>
+<!--                                                <td>-->
+<!--                                                    <span t-field="picking.payment_status"/>-->
+<!--                                                </td>-->
+                                                <td>
+                                                    <span t-field="picking.state"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="show_issue" class="modal fade" tabindex="-1" role="dialog"
+                             aria-labelledby="label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div id="loading-indicator" style="display:none"/>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        <h4 class="modal-title" id="label"></h4>
+                                    </div>
+                                    <div class="modal-body issue-list">
+                                        <input type="hidden" id="longitude" name="longitude"
+                                               value=""/>
+                                        <input type="hidden" id="latitude" name="latitude"
+                                               value=""/>
+                                        <input type="hidden" id="driver_longitude" value=""/>
+                                        <input type="hidden" id="driver_latitude" name="driver_latitude"
+                                               value=""/>
+                                        <div id='issue_map' style="height:250px;width:550px;"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn " data-dismiss="modal">OK
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
