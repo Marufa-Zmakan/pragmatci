@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="upload_prescription" name="Upload Prescription">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <t t-if="not website.is_breadcum">
+                    <t t-if="website.breadcum_background_image">
+                        <nav class="is-breadcrumb shop-breadcrumb" role="navigation" aria-label="breadcrumbs" t-attf-style="background:none;background-color:#{website.breadcrumb_color};padding:#{website.breadcrumb_height};">
+                            <div class="container">
+                                <h1>
+                                    <span t-attf-style="color:#{website.breadcrumb_text_color}">Upload Prescription</span>
+                                </h1>
+                                <ul class="breadcrumb">
+                                    <li>
+                                        <span t-attf-style="color:#{website.breadcrumb_text_color}">Home</span>
+                                    </li>
+                                    <li class="active">
+                                        <span t-attf-style="color:#{website.breadcrumb_text_color}">Upload Prescription</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </t>
+                    <t t-if="not website.breadcum_background_image">
+                        <t t-set="bread_cum" t-value="website.image_url(website,'bread_cum_image')" />
+                        <nav class="is-breadcrumb shop-breadcrumb" role="navigation" aria-label="breadcrumbs" t-attf-style="background-image:url(#{bread_cum}#);padding:#{website.breadcrumb_height};">
+                            <div class="container">
+                                <h1>
+                                    <span t-attf-style="color:#{website.breadcrumb_text_color}">Upload Prescription</span>
+                                </h1>
+                                <ul class="breadcrumb">
+                                    <li>
+                                        <a href="/" t-attf-style="color:#{website.breadcrumb_text_color}">Home</a>
+                                    </li>
+                                    <li class="active">
+                                        <span t-attf-style="color:#{website.breadcrumb_text_color}">Upload Prescription</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </t>
+                </t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <form role="form" action="/prescription-submit" method="post" data-model_name="crm.lead" enctype="multipart/form-data" data-success_page="/contactus-thank-you">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="form-group row form-field o_website_form_required_custom">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label" for="contact_name">Your Name</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="text" class="form-control o_website_form_input" name="contact_name" required="" t-att-value="name or partner.name"/>
+                            </div>
+                          </div>
+                          <div class="form-group row form-field o_website_form_required_custom">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label" for="phone">Phone Number</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="phone or partner.phone"/>
+                            </div>
+                          </div>
+                          <div class="form-group row form-field o_website_form_required_custom">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label" for="email_from">Email</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="text" class="form-control o_website_form_input" name="email_from" required="" t-att-value="email or partner.email"/>
+                            </div>
+                          </div>
+                            <div class="row form-group form-field">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label o_fake_editable" for="city">
+                                    City
+                                </label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="text" class="form-control o_website_form_input" name="city" t-att-value="city or partner.city"/>
+                            </div>
+                          </div>
+                          <div class="row form-group form-field o_fake_not_editable">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label o_fake_editable" for="street">
+                                    Street
+                                </label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="text" class="form-control o_website_form_input" name="street" t-att-value="street or partner.street"/>
+                            </div>
+                          </div>
+                        <div class="w-100"/>
+<!--                        <div class="row form-group form-field o_fake_not_editable">-->
+<!--                            <div class="col-lg-3 col-md-4">-->
+<!--                                <label class="col-form-label" for="country_id">Country</label>-->
+<!--                            </div>-->
+<!--                            <div class="col-lg-7 col-md-8">-->
+<!--                                <select id="country_id" name="country_id" >-->
+<!--                                    <option value="">Country...</option>-->
+<!--                                    <t t-foreach="countries" t-as="c">-->
+<!--&lt;!&ndash;                                        <option t-att-value="c.id" t-att-selected="c.id == (country and country.id or -1) if c.id else c.id == partner.country_id.id">&ndash;&gt;-->
+<!--                                        <option t-att-value="c.id" t-att-selected="c.id == int(country_id) if country_id else c.id == partner.country_id.id">-->
+<!--                                            <t t-esc="c.name" />-->
+<!--                                        </option>-->
+<!--                                    </t>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                          <div class="row form-group form-field o_website_form_custom o_fake_not_editable o_website_form_required_custom">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label o_fake_editable" for="Custom File Upload">
+                                    Prescription Attachment
+                                </label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <input type="file" class="form-control o_website_form_input" name="Custom File Upload" required=""/>
+                            </div>
+                          </div>
+                          <div class="form-group row form-field o_fake_not_editable">
+                            <div class="col-lg-3 col-md-4">
+                              <label class="col-form-label o_fake_editable" for="description">Note</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                              <textarea class="form-control o_website_form_input" name="description"/>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                              <button class="btn btn-primary btn-lg o_website_form_send">Submit</button>
+                              <span id="o_website_form_result"/>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <record id="customer_thanks" model="website.page">
+        <field name="name">Thanks</field>
+        <field name="type">qweb</field>
+        <field name="url">/customer-thank-you</field>
+        <field name="website_published">True</field>
+        <field name="key">atharva_theme_general.customer_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="atharva_theme_general.customer_thanks">
+                <t t-call="website.layout">
+                  <div id="wrap">
+                    <div class="container" style="padding-top: 40px;">
+                        <h1>Thanks!</h1>
+                        <div class="row">
+                            <div class="col-lg-8" >
+                                <div class="alert alert-success" role="status">
+                                    Your Prescription has been submitted successfully.
+                                </div>
+                                <p>
+                                    We will deliver your items shortly.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </t>
+            </t>
+        </field>
+    </record>
+</odoo>

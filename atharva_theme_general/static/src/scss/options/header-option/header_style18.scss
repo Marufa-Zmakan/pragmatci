@@ -288,7 +288,8 @@
                       padding: 10px 12px;
                       text-align: center;
                       text-decoration: none;
-                      display: inline-block;
+                      display: inline-flex;
+                      white-space: nowrap;
                       font-size: 14px;
                       margin: 4px 2px;
                       cursor: pointer;
