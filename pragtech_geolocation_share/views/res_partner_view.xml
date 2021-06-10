@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_geolocate_form_inherited" model="ir.ui.view">
+            <field name="name">view.res.inherit.geolocate.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='street2']" position="after">
+                    <field name="building" placeholder="Building..."/>
+                    <field name="zone" placeholder="Zone..."/>
+                    <field name="street_number" placeholder="Street number..."/>
+
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
+

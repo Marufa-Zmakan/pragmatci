@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ShowHomeDeliveryButton">
+        <div class='control-button js_home_delivery'>
+            <i class='fa fa-tag' /> Home Delivery
+        </div>
+    </t>
+
+    <t t-name="HomeDeliveryOrderPopupWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup home-delivery-popup" style="height:auto;margin-top:423;">
+              <div class="modal-content" style="width: 100%!important;">
+                  <div class="modal-body">
+                  <div class="modal-header" style="background-color: #14e871;">
+                    <p class="title">Home Delivery Order</p>
+                   </div>
+                      <div class='control-button address_button' style="background-color: #e03a57; margin-top: 13px; width: 146px;">
+                    ADDRESS
+                  </div>
+                      <div class='control-button other_info_button' style="width: 146px;">
+                    OTHER INFO
+                  </div>
+
+                      <div class="default_shipping_address" id="default_shipping_address">
+                      <h6>By Default Shipped To Selected Customer Address</h6>
+                          <div class="checkbox address-checkbox">
+                      <label><input type="checkbox" id="address_checkbox"/>
+                          <h6>Ship to Different Address</h6></label>
+                      </div>
+                  </div>
+
+                      <div class='customer-details-box' id="customer-shipping-address" style="display: ruby-base-container;font-size: 50%;">
+                      <div class='customer-details-left'>
+                        <div class="form-group">
+                            <label class='label' style="font-size: initial;margin-right: 5px;padding-right: 3px;">Name*</label>
+                            <input type="text" class='form-control detail customer-address-name clear-input' style="min-height: revert;padding: 7px;" name='customer_name'  placeholder='Name'/>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: initial;margin-right: 5px;padding-right: 3px;">Mobile*</label>
+                              <input type="tel" class='form-control detail customer-address-mobile clear-input' style="min-height: revert;padding: 7px;"  name='mobile'    placeholder='Mobile'></input>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: initial;margin-right: 5px;padding-right: 3px;">Email*</label>
+                              <input type="email" class='form-control detail customer-address-email clear-input' style="min-height: revert;padding: 7px;"  name='email'      placeholder='Email'></input>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: 14px;margin-right: 5px;padding-right: 3px;">Locality*</label>
+                              <input type="text" class='form-control detail customer-address-locality clear-input' style="min-height: revert;padding: 7px;"  name='locality'      placeholder='Locality'></input>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: initial;">Street</label>
+                              <input type="text" class='form-control detail customer-address-street clear-input' style="min-height: revert;padding: 7px;" name="street" placeholder='Street'></input>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: initial;margin-right: 5px;padding-right: 3px;">City*</label>
+                              <input type="text" class='form-control detail customer-address-city clear-input'   style="min-height: revert;padding: 7px;" name="city" placeholder='City'></input>
+                        </div><br></br>
+                          <div class="form-group">
+                            <label class='label' style="font-size: initial;margin-right: 5px;padding-right: 3px;">Zip*</label>
+                              <input type="text" class='form-control detail customer-address-zip clear-input'  style="min-height: revert;padding: 7px;"  name='zip' placeholder='Zip'></input>
+                        </div>
+
+                    </div>
+                  </div>
+
+                      <div class='delivery-details-box' id="other_information_div">
+                        <h3>Other Information</h3>
+                          <div class="other_info delivery_person" style="text-align:left;">
+                            <label class='label'>Delivery Person</label>
+                              <select class='detail delivery_person' name='delivery_person' id="delivery_person">
+                                <option value=''>Set Delivery Person</option>
+                                  <t t-foreach='widget.pos.users_lst' t-as='user'>
+                                  <option t-att-value='user.id' t-att-selected="user.id">
+
+                                    <t t-esc='user.name'/>
+                                  </option>
+                                </t>
+                            </select>
+                      </div>
+                          <div class="other_info delivery time" style="text-align: left;">
+                <label class='label' style="width: 17%; float: left;     text-align: right; padding-right: 11px; margin-top: 17px;">Date</label>
+                              <input type="datetime-local" id="delivery_datetime" name="delivery_datetime"/>
+                      </div>
+
+                          <br />
+
+                          <div class="other_info delivery_note">
+                          <input style="width:100%;" type="text" id="delivery_note" placeholder="Add Delivery Note" name="order_note"/>
+                      </div>
+
+                  </div>
+
+                      <footer class="footer">
+                       <div class="button create_home_delivery">
+                            Create
+                        </div>
+                          <div class="button cancel">
+                            Cancel
+                        </div>
+                          <div class="button clear">
+                            Clear
+                        </div>
+                   </footer>
+              </div>
+            </div>
+              </div>
+        </div>
+    </t>
+
+    <!-- PosReceipt-->
+    <t t-extend="OrderReceipt">
+       <t t-jquery=".pos-receipt-contact" t-operation="after">
+           <t t-if="widget.pos.delivery_type != 'default' and widget.pos.delivery_type_name">
+               <br />Delivery Type : <t t-esc="widget.pos.delivery_type_name"/><br />
+           </t>
+           <t t-if="widget.pos.delivery_details">
+           <div class="delivery_details">
+               <br />
+               <h3>Delivery Info:</h3>
+               <t t-if="widget.pos.delivery_details.customer_name or widget.pos.get_order().get_client().name">
+                        Name: <t t-esc="widget.pos.delivery_details.customer_name or widget.pos.get_order().get_client().name or ''"/><br />
+                    </t>
+               <t t-if="widget.pos.delivery_details.phone or widget.pos.get_order().get_client().phone">
+                        Mobile: <t t-esc="widget.pos.delivery_details.phone or widget.pos.get_order().get_client().phone or ''"/><br />
+                    </t>
+
+
+               <!--               <t t-if="widget.pos.get_order().delivery_type_name != 'take_away'">-->
+               <t t-if = "widget.pos.get_order().delivery_type_name == 'Home Delivery'">
+                                                                        <t t-if="widget.pos.get_order().delivery_type_name">
+               <t t-if="widget.pos.get_order().delivery_type_name != ''">
+                                      <b style="font-size: larger;">Delivery Type: </b><t t-esc="widget.pos.get_order().delivery_type_name"/><br />
+
+                   </t>
+                </t>
+
+
+               <t t-if="widget.pos.delivery_person_name != ''">
+                        Delivery Person: <t t-esc="widget.pos.delivery_person_name or ''"/><br />
+                   </t>
+                   <t t-if="widget.pos.delivery_details.delivery_time">
+                        Delivery Date : <t t-esc="moment(widget.pos.delivery_details.delivery_time).format('MMMM Do YYYY, hh mm a') or ''"/><br />
+                   </t>
+                   <t t-if="widget.pos.delivery_details.street and widget.pos.delivery_details.city">
+                         Address : <t t-esc="widget.pos.delivery_details.street or ''"/>
+                   <t t-esc="widget.pos.delivery_details.street2 or ''"/>
+                   <t t-esc="widget.pos.delivery_details.city or ''"/>
+                   <t t-esc="widget.pos.delivery_details.zip or ''"/><br />
+                    </t>
+               <t t-else="">
+                        Address : <t t-esc="widget.pos.get_order().get_client().address or ''"/><br />
+                   </t>
+
+                   <!--                              widget:<t t-esc="widget"/>-->
+                   <!--               aa************:<t t-esc="widget.pos"/>-->
+                   <!--               Delivery details:<t t-esc="widget.pos.delivery_details"/>-->
+
+                              </t>
+
+               <br />
+
+           </div>
+           </t>
+                      <t t-if="widget.pos.get_order().delivery_type_name">
+
+               <t t-if = "widget.pos.get_order().delivery_type_name != 'Home Delivery'">
+
+           <t t-if="widget.pos.get_order().delivery_type_name != ''">
+                   <b style="font-size: larger;">Delivery Type: </b><t t-esc="widget.pos.get_order().delivery_type_name"/><br />
+                   </t>
+               </t>
+                      </t>
+
+
+
+       </t>
+    </t>
+
+    <!--<t t-name="PaymentScreen-Paymentmethods">-->
+    <!--<div class='paymentmethods'>-->
+    <!--<t t-foreach="widget.pos.cashregisters" t-as="cashregister">-->
+    <!--<t t-if="cashregister.journal.home_delivery_journal_user">-->
+    <!--<div class="button paymentmethod" t-att-data-id="cashregister.journal_id[0]">-->
+    <!--<t t-esc="cashregister.journal_id[1]" />-->
+    <!--</div>-->
+    <!--</t>-->
+
+    <!--</t>-->
+    <!--</div>-->
+
+    <!--</t>-->
+
+    <t t-extend="FloorScreenWidget">
+       <t t-jquery=".floor-map" t-operation="after">
+           <div class="row">
+                <div class="col-xs-4 show_delivery_buttons_floor">
+<!--                    <t t-if="widget.pos.config.floor_parcel">-->
+                    <!--                       <button class="take_away_button" id="take_away_button">-->
+                    <!--                            Take Away-->
+                    <!--                        </button>-->
+                    <!--                    </t>-->
+                    <t t-if="widget.pos.config.floor_home_delivery">
+                       <button class="home_delivery_button" id="home_delivery_button">
+                            Home Delivery
+                       </button>
+                    </t>
+
+                </div>
+           </div>
+       </t>
+     </t>
+
+<!--    <t t-extend="OrderSelectorWidget">
+        <t t-jquery="div.order-selector" t-operation="append">
+            <t t-if="widget.pos.config.iface_floorplan == false">
+                <div class="main_floor_custom">
+                    <button class="main_floor_button">
+                    Floors
+                    </button>
+                </div>
+            </t>
+        </t>
+    </t>-->
+
+
+</templates>

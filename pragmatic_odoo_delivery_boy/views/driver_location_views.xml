@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="driver_location_action_partner">
+            <field name="name">Drivers Locations</field>
+            <field name="model_id" ref="pragmatic_odoo_delivery_boy.model_res_partner"/>
+            <field name="binding_model_id" ref="pragmatic_odoo_delivery_boy.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = {
+                'type': 'ir.actions.act_window',
+                'name': 'All Drivers',
+                'view_mode': 'google_map,form',
+                'view_type': 'form',
+                'res_model': 'res.partner',
+                'domain' : ['|',('is_driver','=',True),('id','=',user.partner_id.id),],
+                'context' : {"invisible":False, "default_customer" : False, "create" : False },
+                }
+            </field>
+        </record>
+
+        <menuitem action="driver_location_action_partner"
+                  name="Driver Locations"
+                  id="all_driver_loc"
+                  parent="pragmatic_odoo_delivery_boy.delivery_control_root"
+                  sequence="1"
+                  groups="stock.group_stock_manager"
+        />
+
+    </data>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="wk_geoip_assets_frontend" inherit_id="website.assets_frontend" name="GeoIP">
+        <xpath expr="." position="inside">
+            <script src="/pragtech_geolocation_share/static/src/js/pt_geolocation_share.js" type="text/javascript"></script>
+             <link rel="stylesheet" href="/pragtech_geolocation_share/static/src/css/pt_geolocation_share.css"/>
+        </xpath>
+    </template>
+
+    <template id="layout" inherit_id="web.layout" name="Web layout">
+
+        <xpath expr="//html//head//script" position="after">
+            <t t-set='google_api_key' t-value="request.env['ir.config_parameter'].sudo().get_param('google_maps_api_key')"/>
+            <script t-attf-src="https://maps.googleapis.com/maps/api/js?key=#{google_api_key}"></script>
+        </xpath>
+    </template>
+
+    <template id="wk_geo_map" inherit_id="portal.portal_my_details" name="Map">
+        <xpath expr="//div[@class='row o_portal_details']/div[@class='col-lg-8']" position="after">
+            <div class="col-lg-4">
+            <div id="cont">
+                <div id="address_map" style="width: 100%; height: 100%;"></div>
+            </div></div>
+        </xpath>
+        <xpath expr="//div[@class='row o_portal_details']/div[@class='col-lg-8']" position="inside">
+            <input type="text" name="partner_latitude" t-att-value="partner_latitude or partner.partner_latitude" />
+            <input type="text" name="partner_longitude" t-att-value="partner_longitude or partner.partner_longitude" />
+        </xpath>
+    </template>
+
+    <template id="wk_geo_shop_map" inherit_id="website_sale.address" name="Map">
+        <xpath expr="//a[@class='btn btn-secondary mb32']/.." position="before">
+            <div id="address_cont">
+                <div id="address_map" style="width: 100%; height: 100%;"></div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='d-flex justify-content-between']" position="before">
+            <input type="text" name="partner_latitude" t-att-value="'partner_latitude' in checkout and checkout['partner_latitude']" />
+            <input type="text" name="partner_longitude" t-att-value="'partner_longitude' in checkout and checkout['partner_longitude']" />
+        </xpath>
+    </template>
+
+</odoo>

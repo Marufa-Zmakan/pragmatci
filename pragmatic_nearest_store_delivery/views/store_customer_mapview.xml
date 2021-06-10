@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="mapview_nearest_store" name="store-markers">
+            <t t-call="website.layout">
+                <style>
+                    html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    }
+                    #store-map {
+                    margin-top:10px;
+                    height:500px;
+                    width:100%;
+                    border:1px solid red;
+                    }
+                </style>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="store-map"/>
+                    </div>
+                </div>
+                <script t-att-src="gmap_url" />
+                <input type="hidden" id="customer" t-att-value="cust_addr"/>
+                <input type="hidden" id="stores" t-att-value="store_addrs"/>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <!-- MANAGE JOB LIST DELIVERY DASHBOARD INHERIT-->
+        <template id="manage_job_list_customer_pos" name="Manage Customer Job List for POS"
+                  inherit_id="pragmatic_odoo_delivery_boy.manage_job_list_customer">
+            <xpath expr="//tbody[@id='manage_customer_sale_order_delivery']/t" position="after">
+                <t t-foreach="pos_orders" t-as="order">
+                    <tr t-att-id="order.pos_reference">
+
+                        <td>
+                            <a t-att-href="'/pos/delivery/route/order-view/' + str(order.pos_delivery_order_ref.name)">
+                                <span t-field="order.pos_delivery_order_ref.name"/>
+                            </a>
+                        </td>
+
+
+                        <td>
+                            <span t-field="order.pos_delivery_order_ref.delivery_person.name"/>
+                        </td>
+                        <td>
+                            <span t-field="order.pos_delivery_order_ref.distance_btn_2_loc"/>
+                        </td>
+                        <td>
+
+                            <span t-field="order.amount_total"/>
+                        </td>
+                        <td>
+                            <span t-field="order.pos_delivery_order_ref.state"/>
+                        </td>
+                    </tr>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
